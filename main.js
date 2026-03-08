@@ -281,6 +281,158 @@ const baseRounds = [
   },
 ];
 
+const baseMixRounds = [
+  {
+    id: "mix-city",
+    name: "まちの のりもの",
+    emoji: "🏙️",
+    subtitle: "いろんな リズム",
+    instruction: "のりものが かわるよ！",
+    color: "#ff6b9d",
+    themeClass: "theme-mix-city",
+    mixSources: ["train", "bus", "taxi"],
+    beatInterval: 450,
+    loops: 4,
+    hitsNeeded: 8,
+    isMix: true,
+    bubbleText: "のりもの",
+    introText: "まちの のりもの ミックス",
+    surpriseTitle: "まちが にぎやか",
+    surpriseCopy: "いろんな のりものが はしるよ",
+    surpriseIcons: ["🏙️", "✨", "🚆"],
+    surpriseMoments: [5, 12],
+    pulseType: "triangle",
+    pulseFrequency: 400,
+    hitTone: 600,
+    bgmNotes: [392, 494, 587, 494],
+    bgmType: "triangle",
+    tapPraise: "すごい",
+    starPraise: "きらきら",
+    clearPraise: "ミックス クリア",
+    feverPraise: "まちの めいじん",
+  },
+  {
+    id: "mix-work",
+    name: "はたらく くるま",
+    emoji: "🔧",
+    subtitle: "はたらく リズム",
+    instruction: "あかに きをつけて！",
+    color: "#e8590c",
+    themeClass: "theme-mix-work",
+    mixSources: ["fire", "police", "bulldozer"],
+    beatInterval: 400,
+    loops: 4,
+    hitsNeeded: 9,
+    isMix: true,
+    bubbleText: "はたらく",
+    introText: "はたらく くるま ミックス",
+    surpriseTitle: "おしごと がんばる",
+    surpriseCopy: "はたらく くるまが だいかつやく",
+    surpriseIcons: ["🔧", "✨", "🚒"],
+    surpriseMoments: [6, 14],
+    pulseType: "square",
+    pulseFrequency: 450,
+    hitTone: 700,
+    bgmNotes: [349, 440, 523, 440],
+    bgmType: "square",
+    tapPraise: "かっこいい",
+    starPraise: "ぴかぴか",
+    clearPraise: "おしごと かんりょう",
+    feverPraise: "はたらく ヒーロー",
+  },
+  {
+    id: "mix-sky",
+    name: "そらの のりもの",
+    emoji: "🌤️",
+    subtitle: "そらの リズム",
+    instruction: "はやい！ あかも くるよ",
+    color: "#1098ad",
+    themeClass: "theme-mix-sky",
+    mixSources: ["heli", "airplane", "rocket"],
+    beatInterval: 350,
+    loops: 4,
+    hitsNeeded: 8,
+    isMix: true,
+    bubbleText: "そら",
+    introText: "そらの のりもの ミックス",
+    surpriseTitle: "そらが ひろがる",
+    surpriseCopy: "そらを とぶ のりものが いっぱい",
+    surpriseIcons: ["🌤️", "✨", "🚁"],
+    surpriseMoments: [6, 16],
+    pulseType: "triangle",
+    pulseFrequency: 500,
+    hitTone: 740,
+    bgmNotes: [330, 494, 659, 880],
+    bgmType: "triangle",
+    tapPraise: "すごすぎ",
+    starPraise: "きらきら てんさい",
+    clearPraise: "そらでも ばっちり",
+    feverPraise: "そらの エース",
+  },
+  {
+    id: "mix-allstar",
+    name: "オールスター",
+    emoji: "🌟",
+    subtitle: "みんな しゅうごう",
+    instruction: "なにが くるかな？",
+    color: "#ae3ec9",
+    themeClass: "theme-mix-allstar",
+    mixSources: ["train", "bus", "fire", "taxi", "ship", "heli", "police", "bulldozer", "airplane", "rocket"],
+    beatInterval: 380,
+    loops: 5,
+    hitsNeeded: 10,
+    isMix: true,
+    bubbleText: "のりもの",
+    introText: "のりもの オールスター",
+    surpriseTitle: "みんな あつまれ",
+    surpriseCopy: "ぜんぶの のりものが でてくるよ",
+    surpriseIcons: ["🌟", "✨", "🎉"],
+    surpriseMoments: [8, 18],
+    pulseType: "triangle",
+    pulseFrequency: 440,
+    hitTone: 680,
+    bgmNotes: [262, 392, 523, 659],
+    bgmType: "triangle",
+    tapPraise: "さいこう",
+    starPraise: "きらきら さいきょう",
+    clearPraise: "オールスター クリア",
+    feverPraise: "のりもの マスター",
+  },
+  {
+    id: "mix-final",
+    name: "ファイナル パレード",
+    emoji: "🎪",
+    subtitle: "さいごの パレード",
+    instruction: "さいそく！ がんばれ！",
+    color: "#d6336c",
+    themeClass: "theme-mix-final",
+    mixSources: ["train", "bus", "fire", "taxi", "ship", "heli", "police", "bulldozer", "airplane", "rocket"],
+    beatInterval: 320,
+    loops: 6,
+    hitsNeeded: 12,
+    isMix: true,
+    bubbleText: "パレード",
+    introText: "ファイナル パレード",
+    surpriseTitle: "グランド フィナーレ",
+    surpriseCopy: "さいごの パレードが はじまるよ",
+    surpriseIcons: ["🎪", "🎆", "✨"],
+    surpriseMoments: [10, 22],
+    pulseType: "triangle",
+    pulseFrequency: 480,
+    hitTone: 750,
+    bgmNotes: [392, 523, 659, 784],
+    bgmType: "triangle",
+    tapPraise: "てんさい",
+    starPraise: "きらきら ちょうじん",
+    clearPraise: "パレード だいせいこう",
+    feverPraise: "リズム だいおう",
+  },
+];
+
+function getSourceRound(sourceId) {
+  return baseRounds.find((r) => r.id === sourceId);
+}
+
 let rounds = buildRounds();
 
 const screens = new Map(
@@ -324,7 +476,9 @@ let bgmStep = 0;
 let state = createInitialState();
 
 function buildRounds() {
-  return baseRounds.map((round) => ({ ...round }));
+  const normal = baseRounds.map((round) => ({ ...round }));
+  const mix = baseMixRounds.map((round) => ({ ...round }));
+  return [...normal, ...mix];
 }
 
 function getVolumeGain() {
@@ -344,9 +498,14 @@ function hideRestStop() {
 }
 
 function showRestStop(nextRound) {
+  const isBonus = rounds.indexOf(nextRound) >= baseRounds.length;
   restStopEmoji.textContent = nextRound.emoji;
-  restStopTitle.textContent = `つぎは ${nextRound.name}`;
-  restStopCopy.textContent = "ちょっと ひとやすみして つづけよう";
+  restStopTitle.textContent = isBonus
+    ? `ボーナス: ${nextRound.name}`
+    : `つぎは ${nextRound.name}`;
+  restStopCopy.textContent = isBonus
+    ? "ボーナスステージ！ がんばろう"
+    : "ちょっと ひとやすみして つづけよう";
   restStop.removeAttribute("hidden");
 }
 
@@ -358,6 +517,7 @@ function createInitialState() {
     hits: 0,
     totalHits: 0,
     acceptingTap: false,
+    previewMode: false,
     timers: [],
     finishedRounds: 0,
     roundResults: [],
@@ -368,6 +528,7 @@ function createInitialState() {
     triggeredSurprises: [],
     feverTimer: null,
     restMisses: 0,
+    currentMixSequence: null,
   };
 }
 
@@ -395,6 +556,49 @@ function buildBeatSequence(round) {
 
   const totalDuration = fullBeats.length * round.beatInterval;
   return { orbSequence, totalDuration };
+}
+
+function buildMixedBeatSequence(round) {
+  const fullBeats = [];
+  const loopSources = [];
+  const availableSources = round.mixSources.slice();
+
+  for (let loop = 0; loop < round.loops; loop += 1) {
+    const sourceId = availableSources[Math.floor(Math.random() * availableSources.length)];
+    const sourceRound = getSourceRound(sourceId);
+    loopSources.push({ sourceId, sourceRound, startBeat: fullBeats.length });
+    for (const beat of sourceRound.rhythm) {
+      fullBeats.push({ value: beat, sourceId });
+    }
+  }
+
+  const orbSequence = [];
+  let orbIndex = 0;
+  for (let i = 0; i < fullBeats.length; i += 1) {
+    const beat = fullBeats[i];
+    if (beat.value !== 0) {
+      orbSequence.push({
+        orbIndex,
+        beatTime: i * round.beatInterval,
+        type: beat.value === 1 ? "tap" : "rest",
+        sourceId: beat.sourceId,
+      });
+      orbIndex += 1;
+    }
+  }
+
+  const totalDuration = fullBeats.length * round.beatInterval;
+  return { orbSequence, totalDuration, loopSources };
+}
+
+function getBeatSequenceForRound(round) {
+  if (round.isMix) {
+    if (!state.currentMixSequence) {
+      state.currentMixSequence = buildMixedBeatSequence(round);
+    }
+    return state.currentMixSequence;
+  }
+  return buildBeatSequence(round);
 }
 
 function renderRewards() {
@@ -597,12 +801,26 @@ function showRoundBanner(text) {
 
 function createPulseOrbs(round) {
   pulseLane.innerHTML = "";
-  const { orbSequence } = buildBeatSequence(round);
+  const { orbSequence } = getBeatSequenceForRound(round);
   for (let index = 0; index < orbSequence.length; index += 1) {
     const orb = document.createElement("div");
     orb.className = "pulse-orb";
     pulseLane.append(orb);
   }
+}
+
+function createPreviewOrbs(round) {
+  pulseLane.innerHTML = "";
+  const previewRound = { ...round, loops: 1 };
+  const { orbSequence } = round.isMix
+    ? buildMixedBeatSequence(previewRound)
+    : buildBeatSequence(previewRound);
+  for (let index = 0; index < orbSequence.length; index += 1) {
+    const orb = document.createElement("div");
+    orb.className = "pulse-orb";
+    pulseLane.append(orb);
+  }
+  return orbSequence;
 }
 
 function showBubble(text) {
@@ -618,6 +836,51 @@ function animateTapButton() {
   tapButton.classList.add("glow");
 }
 
+function runPreview(round, callback) {
+  state.previewMode = true;
+  tapButton.classList.add("preview-mode");
+  tapButton.querySelector("span").textContent = "👀 みてね";
+
+  const previewOrbSequence = createPreviewOrbs(round);
+  const pulseOrbs = Array.from(document.querySelectorAll(".pulse-orb"));
+  const previewRound = { ...round, loops: 1 };
+  const previewDuration = round.isMix
+    ? buildMixedBeatSequence(previewRound).totalDuration
+    : buildBeatSequence(previewRound).totalDuration;
+
+  showRoundBanner("🎵 おてほん");
+
+  for (const entry of previewOrbSequence) {
+    const timer = setTimeout(() => {
+      pulseOrbs.forEach((orb) => {
+        orb.classList.remove("pulse-active", "pulse-rest-active");
+      });
+      if (pulseOrbs[entry.orbIndex]) {
+        pulseOrbs[entry.orbIndex].classList.add(
+          entry.type === "tap" ? "pulse-active" : "pulse-rest-active",
+        );
+      }
+      if (entry.type === "tap") {
+        playTone(round.pulseFrequency + entry.orbIndex * 18, 0.18, round.pulseType);
+      } else {
+        playTone(round.pulseFrequency * 0.6 + entry.orbIndex * 10, 0.14, round.pulseType);
+      }
+    }, entry.beatTime);
+    state.timers.push(timer);
+  }
+
+  const finishTimer = setTimeout(() => {
+    pulseOrbs.forEach((orb) => {
+      orb.classList.remove("pulse-active", "pulse-rest-active");
+    });
+    state.previewMode = false;
+    tapButton.classList.remove("preview-mode");
+    tapButton.querySelector("span").textContent = "👆 タップ";
+    callback();
+  }, previewDuration + 200);
+  state.timers.push(finishTimer);
+}
+
 function prepareRound() {
   clearTimers();
   hideRestStop();
@@ -625,9 +888,19 @@ function prepareRound() {
   state.hits = 0;
   state.acceptingTap = false;
   state.triggeredSurprises = [];
+  state.currentMixSequence = null;
 
   const round = rounds[state.roundIndex];
-  roundLabel.textContent = `ラウンド ${state.roundIndex + 1} / ${rounds.length}`;
+
+  if (round.isMix) {
+    state.currentMixSequence = buildMixedBeatSequence(round);
+  }
+
+  const isBonus = state.roundIndex >= baseRounds.length;
+  const label = isBonus
+    ? `ボーナス ${state.roundIndex - baseRounds.length + 1} / ${baseMixRounds.length}`
+    : `ラウンド ${state.roundIndex + 1} / ${baseRounds.length}`;
+  roundLabel.textContent = label;
   playfield.className = `playfield ${round.themeClass}`;
   vehicleEmoji.textContent = round.emoji;
   vehicleName.textContent = round.name;
@@ -641,18 +914,38 @@ function prepareRound() {
 
   showScreen("game");
 
-  const startDelay = 1800;
-  const timer = setTimeout(() => runPulseSequence(round), startDelay);
+  const introDelay = 1200;
+  const timer = setTimeout(() => {
+    if (round.isMix) {
+      showRoundBanner("いろんな のりものが でるよ！");
+      const startTimer = setTimeout(() => {
+        createPulseOrbs(round);
+        runPulseSequence(round);
+      }, 1400);
+      state.timers.push(startTimer);
+    } else {
+      runPreview(round, () => {
+        showRoundBanner("さあ はじめよう！");
+        const startTimer = setTimeout(() => {
+          createPulseOrbs(round);
+          runPulseSequence(round);
+        }, 1200);
+        state.timers.push(startTimer);
+      });
+    }
+  }, introDelay);
   state.timers.push(timer);
 }
 
 function runPulseSequence(round) {
   const pulseOrbs = Array.from(document.querySelectorAll(".pulse-orb"));
-  const { orbSequence, totalDuration } = buildBeatSequence(round);
+  const { orbSequence, totalDuration } = getBeatSequenceForRound(round);
 
   pulseOrbs.forEach((orb) => {
     orb.classList.remove("pulse-active", "pulse-rest-active", "pulse-hit", "pulse-rest-passed");
   });
+
+  let lastSourceId = null;
 
   for (const entry of orbSequence) {
     const timer = setTimeout(() => {
@@ -672,10 +965,31 @@ function runPulseSequence(round) {
         }
       });
 
+      if (round.isMix && entry.sourceId && entry.sourceId !== lastSourceId) {
+        lastSourceId = entry.sourceId;
+        const src = getSourceRound(entry.sourceId);
+        if (src) {
+          vehicleEmoji.classList.add("switching");
+          setTimeout(() => {
+            vehicleEmoji.textContent = src.emoji;
+            vehicleName.textContent = src.name;
+            vehicleSubtitle.textContent = src.subtitle;
+            vehicleEmoji.classList.remove("switching");
+          }, 150);
+        }
+      }
+
+      const freq = round.isMix && entry.sourceId
+        ? (getSourceRound(entry.sourceId)?.pulseFrequency ?? round.pulseFrequency)
+        : round.pulseFrequency;
+      const pType = round.isMix && entry.sourceId
+        ? (getSourceRound(entry.sourceId)?.pulseType ?? round.pulseType)
+        : round.pulseType;
+
       if (entry.type === "tap") {
-        playTone(round.pulseFrequency + entry.orbIndex * 18, 0.18, round.pulseType);
+        playTone(freq + entry.orbIndex * 18, 0.18, pType);
       } else {
-        playTone(round.pulseFrequency * 0.6 + entry.orbIndex * 10, 0.14, round.pulseType);
+        playTone(freq * 0.6 + entry.orbIndex * 10, 0.14, pType);
       }
 
       if (round.surpriseMoments.includes(entry.orbIndex)) {
@@ -742,7 +1056,12 @@ function showResult() {
   hideRestStop();
   hideSurprise();
   stopBgm();
-  resultTitle.textContent = `${rounds.length}だい クリア`;
+  const normalCount = Math.min(state.finishedRounds, baseRounds.length);
+  const bonusCount = Math.max(0, state.finishedRounds - baseRounds.length);
+  const titleText = bonusCount > 0
+    ? `${normalCount}だい + ボーナス${bonusCount} クリア`
+    : `${normalCount}だい クリア`;
+  resultTitle.textContent = titleText;
   resultCopy.textContent = `ぜんぶで ${state.totalHits} かい タップできたよ。さいごまで あそべた きみは りずむ めいじん。`;
   const bonusParts = [`スター ${state.stars}こ`, `さいこう ${state.bestStreak}れんぞく`, `サプライズ ${state.surprises}かい`];
   if (state.restMisses > 0) {
@@ -759,6 +1078,11 @@ function handleTap() {
   const round = rounds[state.roundIndex];
 
   animateTapButton();
+
+  if (state.previewMode) {
+    showBubble("👀 みてるよ！");
+    return;
+  }
 
   if (restStop.hasAttribute("hidden") === false) {
     showBubble("つぎの じゅんびちゅう");
