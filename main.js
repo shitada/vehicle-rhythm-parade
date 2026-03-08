@@ -519,6 +519,7 @@ function createInitialState() {
     roundIndex: 0,
     activePulse: -1,
     activeOrbType: null,
+    pendingOrb: null,
     hits: 0,
     totalHits: 0,
     acceptingTap: false,
@@ -988,7 +989,19 @@ function runPulseSequence(round) {
   let lastSourceId = null;
 
   for (const entry of orbSequence) {
+    // Early-tap window: accept tap 20% of beatInterval BEFORE the orb lights up
+    const earlyWindow = Math.round(round.beatInterval * 0.2);
+    const earlyTime = Math.max(0, entry.beatTime - earlyWindow);
+
+    if (earlyTime < entry.beatTime) {
+      const earlyTimer = setTimeout(() => {
+        state.pendingOrb = entry;
+      }, earlyTime);
+      state.timers.push(earlyTimer);
+    }
+
     const timer = setTimeout(() => {
+      state.pendingOrb = null;
       state.activePulse = entry.orbIndex;
       state.activeOrbType = entry.type;
 
@@ -1043,6 +1056,7 @@ function runPulseSequence(round) {
         }
         state.acceptingTap = false;
         state.activeOrbType = null;
+        state.pendingOrb = null;
       }, round.beatInterval * 0.75);
 
       state.timers.push(deactivateTimer);
@@ -1127,6 +1141,36 @@ function handleTap() {
   if (restStop.hasAttribute("hidden") === false) {
     showBubble("つぎの じゅんびちゅう");
     return;
+  }
+
+  // Early-tap: tapped before orb lit up, within the early window
+  if (state.pendingOrb && !state.acceptingTap && state.activeOrbType === null) {
+    const pending = state.pendingOrb;
+    state.pendingOrb = null;
+
+    if (pending.type === "tap") {
+      // Treat as a hit — light up the orb immediately
+      state.activePulse = pending.orbIndex;
+      state.activeOrbType = "tap";
+      state.acceptingTap = true;
+      const pulseOrbs = Array.from(document.querySelectorAll(".pulse-orb"));
+      pulseOrbs.forEach((orb) => orb.classList.remove("pulse-active", "pulse-rest-active"));
+      if (pulseOrbs[pending.orbIndex]) {
+        pulseOrbs[pending.orbIndex].classList.add("pulse-active");
+      }
+      // Fall through to the normal acceptingTap handler below
+    } else if (pending.type === "rest") {
+      // Early tap on upcoming rest orb
+      state.streak = 0;
+      state.restMisses += 1;
+      renderRewards();
+      showBubble("💤 おやすみちゅう！");
+      playTone(220, 0.12, "square");
+      tapButton.classList.remove("rest-miss");
+      void tapButton.offsetWidth;
+      tapButton.classList.add("rest-miss");
+      return;
+    }
   }
 
   if (state.activeOrbType === "rest") {
