@@ -738,11 +738,11 @@ function playTone(frequency, duration, type = "sine", gainScale = 1) {
     oscillator.type = type;
     oscillator.frequency.value = frequency;
 
-    // Use linearRamp for maximum browser compatibility
-    gainNode.gain.setValueAtTime(0, now);
+    // Safari requires non-zero start value for linearRamp to work
+    gainNode.gain.setValueAtTime(0.0001, now);
     gainNode.gain.linearRampToValueAtTime(volumeGain, attackEnd);
     gainNode.gain.setValueAtTime(volumeGain, releaseStart);
-    gainNode.gain.linearRampToValueAtTime(0, releaseStart + 0.03);
+    gainNode.gain.linearRampToValueAtTime(0.0001, releaseStart + 0.03);
 
     oscillator.connect(gainNode);
     gainNode.connect(audioContext.destination);
