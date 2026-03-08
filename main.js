@@ -7,15 +7,16 @@ const baseRounds = [
     instruction: "ひかったら タップ",
     color: "#2f8cff",
     themeClass: "theme-train",
-    pulses: 14,
-    interval: 1120,
-    hitsNeeded: 6,
+    rhythm: [1, 1, 0, 0, 1, 1, 0, 0],
+    beatInterval: 500,
+    loops: 3,
+    hitsNeeded: 8,
     bubbleText: "ガタン",
     introText: "でんしゃの リズム",
     surpriseTitle: "トンネル ぴかっ",
     surpriseCopy: "でんしゃが トンネルを くぐるよ",
     surpriseIcons: ["🚆", "✨", "🛤️"],
-    surpriseMoments: [4, 10],
+    surpriseMoments: [3, 9],
     pulseType: "sine",
     pulseFrequency: 350,
     hitTone: 540,
@@ -31,18 +32,19 @@ const baseRounds = [
     name: "バス",
     emoji: "🚌",
     subtitle: "ゆら ゆら",
-    instruction: "ピカッで タップ",
+    instruction: "リズムに あわせて タップ",
     color: "#ff9f1c",
     themeClass: "theme-bus",
-    pulses: 15,
-    interval: 1060,
-    hitsNeeded: 7,
+    rhythm: [1, 0, 1, 1, 0, 0],
+    beatInterval: 480,
+    loops: 4,
+    hitsNeeded: 8,
     bubbleText: "ゆら ゆら",
     introText: "バスで しゅっぱつ",
     surpriseTitle: "まどの そと キラッ",
     surpriseCopy: "まちの けしきが みえてくるよ",
     surpriseIcons: ["🚌", "🏙️", "✨"],
-    surpriseMoments: [4, 11],
+    surpriseMoments: [3, 9],
     pulseType: "sawtooth",
     pulseFrequency: 390,
     hitTone: 590,
@@ -58,18 +60,19 @@ const baseRounds = [
     name: "しょうぼうしゃ",
     emoji: "🚒",
     subtitle: "ウー ウー",
-    instruction: "ピカッで タップ",
+    instruction: "3れんだ リズム",
     color: "#ff6b4a",
     themeClass: "theme-fire",
-    pulses: 16,
-    interval: 1000,
-    hitsNeeded: 7,
+    rhythm: [1, 1, 1, 0, 1, 1, 1, 0],
+    beatInterval: 440,
+    loops: 3,
+    hitsNeeded: 12,
     bubbleText: "ウー ウー",
     introText: "しょうぼうしゃ しゅつどう",
     surpriseTitle: "みず しゅーっ",
     surpriseCopy: "ホースで みずを しゅーっ",
     surpriseIcons: ["🚒", "💦", "✨"],
-    surpriseMoments: [4, 12],
+    surpriseMoments: [5, 14],
     pulseType: "square",
     pulseFrequency: 470,
     hitTone: 690,
@@ -85,18 +88,19 @@ const baseRounds = [
     name: "タクシー",
     emoji: "🚕",
     subtitle: "スイスイ",
-    instruction: "よく みて タップ",
+    instruction: "よく きいて タップ",
     color: "#f7c948",
     themeClass: "theme-taxi",
-    pulses: 17,
-    interval: 940,
+    rhythm: [1, 1, 0, 1, 0, 0],
+    beatInterval: 420,
+    loops: 4,
     hitsNeeded: 8,
     bubbleText: "スイスイ",
     introText: "タクシーで まちを すすむ",
     surpriseTitle: "ネオン きらっ",
     surpriseCopy: "まちの ライトが ひかるよ",
     surpriseIcons: ["🚕", "🌃", "✨"],
-    surpriseMoments: [5, 12],
+    surpriseMoments: [4, 10],
     pulseType: "triangle",
     pulseFrequency: 430,
     hitTone: 620,
@@ -112,18 +116,19 @@ const baseRounds = [
     name: "ふね",
     emoji: "🚢",
     subtitle: "ゆったり ざぶーん",
-    instruction: "おとに あわせて タップ",
+    instruction: "あかは おやすみ！",
     color: "#008c8c",
     themeClass: "theme-ship",
-    pulses: 18,
-    interval: 880,
+    rhythm: [1, 1, 0, -1, 0, 1, 0],
+    beatInterval: 440,
+    loops: 4,
     hitsNeeded: 8,
     bubbleText: "ざぶーん",
     introText: "ふねで うみへ",
     surpriseTitle: "しぶき きらきら",
     surpriseCopy: "うみに ひかりが はねるよ",
     surpriseIcons: ["🚢", "🌊", "✨"],
-    surpriseMoments: [5, 13],
+    surpriseMoments: [4, 12],
     pulseType: "sine",
     pulseFrequency: 320,
     hitTone: 560,
@@ -139,18 +144,19 @@ const baseRounds = [
     name: "ヘリコプター",
     emoji: "🚁",
     subtitle: "ブーン ブーン",
-    instruction: "はやめに タップ",
+    instruction: "あかは たたかないで",
     color: "#29b37e",
     themeClass: "theme-heli",
-    pulses: 19,
-    interval: 820,
-    hitsNeeded: 9,
+    rhythm: [1, 1, 0, -1, 1, 1, 0],
+    beatInterval: 400,
+    loops: 4,
+    hitsNeeded: 10,
     bubbleText: "ブーン",
     introText: "ヘリコプターで そらへ",
     surpriseTitle: "くもの うえ",
     surpriseCopy: "ふわっと そらを とんでいくよ",
     surpriseIcons: ["🚁", "☁️", "🌤️"],
-    surpriseMoments: [6, 14],
+    surpriseMoments: [5, 15],
     pulseType: "triangle",
     pulseFrequency: 410,
     hitTone: 610,
@@ -166,18 +172,19 @@ const baseRounds = [
     name: "パトカー",
     emoji: "🚓",
     subtitle: "ピーポー",
-    instruction: "すばやく タップ",
+    instruction: "あかに きをつけて！",
     color: "#3867d6",
     themeClass: "theme-police",
-    pulses: 20,
-    interval: 770,
+    rhythm: [1, -1, 1, 0, 1, -1, 0],
+    beatInterval: 380,
+    loops: 4,
     hitsNeeded: 9,
     bubbleText: "ピーポー",
     introText: "パトカーで パトロール",
     surpriseTitle: "ライト ぴかぴか",
     surpriseCopy: "あおと あかが くるくる ひかるよ",
     surpriseIcons: ["🚓", "🔵", "🔴"],
-    surpriseMoments: [6, 14],
+    surpriseMoments: [5, 15],
     pulseType: "square",
     pulseFrequency: 500,
     hitTone: 720,
@@ -193,18 +200,19 @@ const baseRounds = [
     name: "ブルドーザー",
     emoji: "🚜",
     subtitle: "ぐいぐい",
-    instruction: "すぐ みて タップ",
+    instruction: "あかは がまん！",
     color: "#c98910",
     themeClass: "theme-bulldozer",
-    pulses: 21,
-    interval: 720,
-    hitsNeeded: 10,
+    rhythm: [1, 1, -1, 0, -1, 1, 0],
+    beatInterval: 360,
+    loops: 4,
+    hitsNeeded: 9,
     bubbleText: "ぐいぐい",
     introText: "ブルドーザーで どんどん",
     surpriseTitle: "どろんこ ぽん",
     surpriseCopy: "つちが ぽんっと はねるよ",
     surpriseIcons: ["🚜", "🪨", "✨"],
-    surpriseMoments: [6, 15],
+    surpriseMoments: [5, 15],
     pulseType: "sawtooth",
     pulseFrequency: 380,
     hitTone: 680,
@@ -220,18 +228,19 @@ const baseRounds = [
     name: "ひこうき",
     emoji: "✈️",
     subtitle: "スーッ",
-    instruction: "はやく みつけて タップ",
+    instruction: "はやい！ よく みて",
     color: "#2dcaea",
     themeClass: "theme-airplane",
-    pulses: 22,
-    interval: 680,
-    hitsNeeded: 10,
+    rhythm: [1, -1, 1, -1, 0, 1, 0],
+    beatInterval: 320,
+    loops: 4,
+    hitsNeeded: 9,
     bubbleText: "スーッ",
     introText: "ひこうきで おおぞらへ",
     surpriseTitle: "にじの そら",
     surpriseCopy: "そらに ひかりの みちが できるよ",
     surpriseIcons: ["✈️", "🌈", "☁️"],
-    surpriseMoments: [7, 16],
+    surpriseMoments: [6, 16],
     pulseType: "triangle",
     pulseFrequency: 560,
     hitTone: 770,
@@ -247,18 +256,19 @@ const baseRounds = [
     name: "ロケット",
     emoji: "🚀",
     subtitle: "ビューン",
-    instruction: "はやく みて タップ",
+    instruction: "さいごまで がんばれ！",
     color: "#7c4dff",
     themeClass: "theme-rocket",
-    pulses: 23,
-    interval: 640,
-    hitsNeeded: 11,
+    rhythm: [1, -1, 1, -1, 1, 0, -1, 0],
+    beatInterval: 300,
+    loops: 3,
+    hitsNeeded: 7,
     bubbleText: "ビューン",
     introText: "ロケットで うちゅうへ",
     surpriseTitle: "ほしが キラキラ",
     surpriseCopy: "うちゅうに きらめきが ひろがるよ",
     surpriseIcons: ["🚀", "🌟", "🪐"],
-    surpriseMoments: [7, 16],
+    surpriseMoments: [5, 14],
     pulseType: "triangle",
     pulseFrequency: 520,
     hitTone: 760,
@@ -344,6 +354,7 @@ function createInitialState() {
   return {
     roundIndex: 0,
     activePulse: -1,
+    activeOrbType: null,
     hits: 0,
     totalHits: 0,
     acceptingTap: false,
@@ -356,7 +367,34 @@ function createInitialState() {
     surprises: 0,
     triggeredSurprises: [],
     feverTimer: null,
+    restMisses: 0,
   };
+}
+
+function buildBeatSequence(round) {
+  const fullBeats = [];
+  for (let loop = 0; loop < round.loops; loop += 1) {
+    for (const beat of round.rhythm) {
+      fullBeats.push(beat);
+    }
+  }
+
+  const orbSequence = [];
+  let orbIndex = 0;
+  for (let i = 0; i < fullBeats.length; i += 1) {
+    const beat = fullBeats[i];
+    if (beat !== 0) {
+      orbSequence.push({
+        orbIndex,
+        beatTime: i * round.beatInterval,
+        type: beat === 1 ? "tap" : "rest",
+      });
+      orbIndex += 1;
+    }
+  }
+
+  const totalDuration = fullBeats.length * round.beatInterval;
+  return { orbSequence, totalDuration };
 }
 
 function renderRewards() {
@@ -522,7 +560,7 @@ function startBgm(round) {
   };
 
   playBgmStep();
-  const interval = Math.max(360, Math.round(round.interval * 0.42));
+  const interval = Math.max(360, Math.round(round.beatInterval * 0.42));
   bgmIntervalId = setInterval(playBgmStep, interval);
 }
 
@@ -559,7 +597,8 @@ function showRoundBanner(text) {
 
 function createPulseOrbs(round) {
   pulseLane.innerHTML = "";
-  for (let index = 0; index < round.pulses; index += 1) {
+  const { orbSequence } = buildBeatSequence(round);
+  for (let index = 0; index < orbSequence.length; index += 1) {
     const orb = document.createElement("div");
     orb.className = "pulse-orb";
     pulseLane.append(orb);
@@ -609,39 +648,58 @@ function prepareRound() {
 
 function runPulseSequence(round) {
   const pulseOrbs = Array.from(document.querySelectorAll(".pulse-orb"));
+  const { orbSequence, totalDuration } = buildBeatSequence(round);
 
   pulseOrbs.forEach((orb) => {
-    orb.classList.remove("pulse-active", "pulse-hit");
+    orb.classList.remove("pulse-active", "pulse-rest-active", "pulse-hit", "pulse-rest-passed");
   });
 
-  for (let index = 0; index < round.pulses; index += 1) {
+  for (const entry of orbSequence) {
     const timer = setTimeout(() => {
-      state.activePulse = index;
-      state.acceptingTap = true;
+      state.activePulse = entry.orbIndex;
+      state.activeOrbType = entry.type;
+
+      if (entry.type === "tap") {
+        state.acceptingTap = true;
+      } else {
+        state.acceptingTap = false;
+      }
 
       pulseOrbs.forEach((orb, orbIndex) => {
-        orb.classList.toggle("pulse-active", orbIndex === index);
+        orb.classList.remove("pulse-active", "pulse-rest-active");
+        if (orbIndex === entry.orbIndex) {
+          orb.classList.add(entry.type === "tap" ? "pulse-active" : "pulse-rest-active");
+        }
       });
 
-      playTone(round.pulseFrequency + index * 18, 0.18, round.pulseType);
+      if (entry.type === "tap") {
+        playTone(round.pulseFrequency + entry.orbIndex * 18, 0.18, round.pulseType);
+      } else {
+        playTone(round.pulseFrequency * 0.6 + entry.orbIndex * 10, 0.14, round.pulseType);
+      }
 
-      if (round.surpriseMoments.includes(index)) {
+      if (round.surpriseMoments.includes(entry.orbIndex)) {
         showSurprise(round);
       }
 
       const deactivateTimer = setTimeout(() => {
+        if (entry.type === "rest" && pulseOrbs[entry.orbIndex]) {
+          pulseOrbs[entry.orbIndex].classList.remove("pulse-rest-active");
+          pulseOrbs[entry.orbIndex].classList.add("pulse-rest-passed");
+        }
         state.acceptingTap = false;
-      }, round.interval * 0.75);
+        state.activeOrbType = null;
+      }, round.beatInterval * 0.75);
 
       state.timers.push(deactivateTimer);
-    }, round.interval * index);
+    }, entry.beatTime);
 
     state.timers.push(timer);
   }
 
   const finishTimer = setTimeout(() => {
     finishRound();
-  }, round.interval * round.pulses + 300);
+  }, totalDuration + 300);
 
   state.timers.push(finishTimer);
 }
@@ -686,7 +744,11 @@ function showResult() {
   stopBgm();
   resultTitle.textContent = `${rounds.length}だい クリア`;
   resultCopy.textContent = `ぜんぶで ${state.totalHits} かい タップできたよ。さいごまで あそべた きみは りずむ めいじん。`;
-  resultBonus.textContent = `スター ${state.stars}こ ・ さいこう ${state.bestStreak}れんぞく ・ サプライズ ${state.surprises}かい`;
+  const bonusParts = [`スター ${state.stars}こ`, `さいこう ${state.bestStreak}れんぞく`, `サプライズ ${state.surprises}かい`];
+  if (state.restMisses > 0) {
+    bonusParts.push(`おやすみミス ${state.restMisses}かい`);
+  }
+  resultBonus.textContent = bonusParts.join(" ・ ");
   showScreen("result");
   playTone(523, 0.18, "triangle");
   setTimeout(() => playTone(659, 0.18, "triangle"), 180);
@@ -703,6 +765,19 @@ function handleTap() {
     return;
   }
 
+  if (state.activeOrbType === "rest") {
+    state.streak = 0;
+    state.restMisses += 1;
+    state.activeOrbType = null;
+    renderRewards();
+    showBubble("💤 おやすみちゅう！");
+    playTone(220, 0.12, "square");
+    tapButton.classList.remove("rest-miss");
+    void tapButton.offsetWidth;
+    tapButton.classList.add("rest-miss");
+    return;
+  }
+
   if (state.acceptingTap) {
     state.hits += 1;
     state.streak += 1;
@@ -710,6 +785,7 @@ function handleTap() {
     state.acceptingTap = false;
 
     const pulseOrbs = Array.from(document.querySelectorAll(".pulse-orb"));
+    pulseOrbs[state.activePulse]?.classList.remove("pulse-active");
     pulseOrbs[state.activePulse]?.classList.add("pulse-hit");
     if (state.streak % 3 === 0) {
       state.stars += 1;
