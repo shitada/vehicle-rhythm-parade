@@ -521,8 +521,11 @@ function createInitialState() {
     activePulse: -1,
     activeOrbType: null,
     pendingOrb: null,
+    orbActivatedAt: 0,
     hits: 0,
     totalHits: 0,
+    totalTapOrbs: 0,
+    justCount: 0,
     acceptingTap: false,
     previewMode: false,
     timers: [],
@@ -536,6 +539,7 @@ function createInitialState() {
     feverTimer: null,
     restMisses: 0,
     currentMixSequence: null,
+    perfectRounds: 0,
   };
 }
 
@@ -1033,9 +1037,11 @@ function runPulseSequence(round) {
       state.pendingOrb = null;
       state.activePulse = entry.orbIndex;
       state.activeOrbType = entry.type;
+      state.orbActivatedAt = performance.now();
 
       if (entry.type === "tap") {
         state.acceptingTap = true;
+        state.totalTapOrbs += 1;
       } else {
         state.acceptingTap = false;
       }
@@ -1103,18 +1109,35 @@ function runPulseSequence(round) {
 
 function finishRound() {
   const round = rounds[state.roundIndex];
+  const { orbSequence } = getBeatSequenceForRound(round);
+  const tapOrbCount = orbSequence.filter((e) => e.type === "tap").length;
+  const isPerfect = state.hits >= tapOrbCount && state.restMisses === 0;
 
   clearTimers();
   state.totalHits += state.hits;
-  state.roundResults.push({ roundId: round.id, hits: state.hits, target: round.hitsNeeded });
+  state.roundResults.push({ roundId: round.id, hits: state.hits, target: round.hitsNeeded, perfect: isPerfect });
   state.finishedRounds = state.roundIndex + 1;
+  if (isPerfect) {
+    state.perfectRounds += 1;
+  }
   renderProgress();
   renderRewards();
-  playTone(523, 0.15, "sine");
-  setTimeout(() => playTone(659, 0.15, "sine"), 120);
-  setTimeout(() => playTone(784, 0.25, "sine"), 240);
-  showBubble(round.clearPraise);
-  showRoundBanner(`${round.name} クリア`);
+
+  if (isPerfect) {
+    // Perfect fanfare: ascending sparkle tones
+    playTone(523, 0.1, "sine");
+    setTimeout(() => playTone(659, 0.1, "sine"), 100);
+    setTimeout(() => playTone(784, 0.1, "sine"), 200);
+    setTimeout(() => playTone(1047, 0.3, "sine"), 300);
+    showBubble("🌟 パーフェクト！");
+    showRoundBanner(`✨ ${round.name} パーフェクト！ ✨`);
+  } else {
+    playTone(523, 0.15, "sine");
+    setTimeout(() => playTone(659, 0.15, "sine"), 120);
+    setTimeout(() => playTone(784, 0.25, "sine"), 240);
+    showBubble(round.clearPraise);
+    showRoundBanner(`${round.name} クリア`);
+  }
   showRewardBurst(round);
 
   const nextTimer = setTimeout(() => {
@@ -1149,14 +1172,34 @@ function showResult() {
   resultTitle.textContent = titleText;
   resultCopy.textContent = `ぜんぶで ${state.totalHits} かい タップできたよ。さいごまで あそべた きみは りずむ めいじん。`;
   const bonusParts = [`スター ${state.stars}こ`, `さいこう ${state.bestStreak}れんぞく`, `サプライズ ${state.surprises}かい`];
+  if (state.justCount > 0) {
+    bonusParts.push(`ジャスト ${state.justCount}かい`);
+  }
+  if (state.perfectRounds > 0) {
+    bonusParts.push(`パーフェクト ${state.perfectRounds}ステージ`);
+  }
   if (state.restMisses > 0) {
     bonusParts.push(`おやすみミス ${state.restMisses}かい`);
   }
   resultBonus.textContent = bonusParts.join(" ・ ");
-  showScreen("result");
-  playTone(523, 0.18, "triangle");
-  setTimeout(() => playTone(659, 0.18, "triangle"), 180);
-  setTimeout(() => playTone(784, 0.24, "triangle"), 360);
+
+  if (state.perfectRounds > 0) {
+    // Special perfect celebration
+    showScreen("result");
+    playTone(523, 0.12, "sine");
+    setTimeout(() => playTone(659, 0.12, "sine"), 150);
+    setTimeout(() => playTone(784, 0.12, "sine"), 300);
+    setTimeout(() => playTone(1047, 0.15, "sine"), 450);
+    setTimeout(() => {
+      playTone(1319, 0.2, "sine");
+      playTone(1047, 0.2, "sine");
+    }, 600);
+  } else {
+    showScreen("result");
+    playTone(523, 0.18, "triangle");
+    setTimeout(() => playTone(659, 0.18, "triangle"), 180);
+    setTimeout(() => playTone(784, 0.24, "triangle"), 360);
+  }
 }
 
 function handleTap() {
@@ -1223,10 +1266,20 @@ function handleTap() {
     state.bestStreak = Math.max(state.bestStreak, state.streak);
     state.acceptingTap = false;
 
+    const elapsed = performance.now() - state.orbActivatedAt;
+    const isJust = elapsed < 80;
+
     const pulseOrbs = Array.from(document.querySelectorAll(".pulse-orb"));
     pulseOrbs[state.activePulse]?.classList.remove("pulse-active");
     pulseOrbs[state.activePulse]?.classList.add("pulse-hit");
-    if (state.streak % 3 === 0) {
+
+    if (isJust) {
+      state.justCount += 1;
+      pulseOrbs[state.activePulse]?.classList.add("pulse-just");
+      showBubble("✨ ジャスト！");
+      playTone(880, 0.08, "sine");
+      playTone(1100, 0.12, "sine");
+    } else if (state.streak % 3 === 0) {
       state.stars += 1;
       showBubble(round.starPraise);
       showRewardBurst(round);
