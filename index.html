@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>のりものリズムパレード</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="screen screen-active" data-screen="title">
+        <div class="hero-card title-card" id="titleCard" role="button" tabindex="0" aria-label="あそぶ">
+          <p class="eyebrow">4さい 5さい むけ</p>
+          <h1>のりもの<br />リズムパレード</h1>
+          <p class="hero-copy">
+            ひかったら タップ。<br />
+            おとと いっしょに あそぼう。
+          </p>
+          <button class="primary-button" id="startButton" type="button">
+            あそぶ
+          </button>
+          <p class="screen-tap-hint" aria-hidden="true">👆 どこでも あそべる</p>
+        </div>
+        <div class="hero-vehicles" aria-hidden="true">
+          <div class="vehicle-badge badge-train">でんしゃ</div>
+          <div class="vehicle-badge badge-bus">バス</div>
+          <div class="vehicle-badge badge-fire">しょうぼうしゃ</div>
+          <div class="vehicle-badge badge-taxi">タクシー</div>
+          <div class="vehicle-badge badge-ship">ふね</div>
+          <div class="vehicle-badge badge-heli">ヘリ</div>
+          <div class="vehicle-badge badge-police">パトカー</div>
+          <div class="vehicle-badge badge-bulldozer">ブルドーザー</div>
+          <div class="vehicle-badge badge-airplane">ひこうき</div>
+          <div class="vehicle-badge badge-rocket">ロケット</div>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="game">
+        <header class="status-bar">
+          <div class="round-pill" id="roundLabel">ラウンド 1 / 3</div>
+          <div class="progress-dots" id="progressDots" aria-label="しんこう"></div>
+          <button class="home-button" id="homeButtonGame" type="button" aria-label="タイトルに もどる">🏠</button>
+        </header>
+
+        <section class="reward-board" aria-label="ごほうび">
+          <div class="reward-pill">
+            <span class="reward-icon" aria-hidden="true">⭐</span>
+            <span id="starCount">0こ</span>
+          </div>
+          <div class="reward-pill">
+            <span class="reward-icon" aria-hidden="true">🎉</span>
+            <span id="streakCount">0れんぞく</span>
+          </div>
+          <div class="fever-sign" id="feverSign" aria-live="polite">キラキラ フィーバー</div>
+        </section>
+
+        <div class="playfield" id="playfield">
+          <div class="sky-decor sky-left"></div>
+          <div class="sky-decor sky-right"></div>
+
+          <div class="vehicle-stage" id="vehicleStage">
+            <div class="vehicle-emoji" id="vehicleEmoji" aria-hidden="true">🚆</div>
+            <div class="vehicle-name" id="vehicleName">でんしゃ</div>
+            <div class="vehicle-subtitle" id="vehicleSubtitle">ガタン ゴトン</div>
+            <div class="cue-row" aria-hidden="true">
+              <span class="cue-icon">✨</span>
+              <span class="cue-arrow">→</span>
+              <span class="cue-icon">👆</span>
+            </div>
+            <div class="vehicle-instruction" id="instructionText">
+              ひかったら タップ
+            </div>
+          </div>
+
+          <div class="pulse-lane" id="pulseLane" aria-hidden="true"></div>
+
+          <button class="tap-button" id="tapButton" type="button">
+            <span>👆 タップ</span>
+          </button>
+
+          <div class="encourage-bubble" id="encourageBubble">いいね</div>
+          <div class="round-banner" id="roundBanner">つぎは でんしゃ</div>
+          <div class="reward-burst" id="rewardBurst" aria-hidden="true"></div>
+          <div class="rest-stop" id="restStop" hidden>
+            <div class="rest-stop-card">
+              <p class="rest-stop-label">ちょっと きゅうけい</p>
+              <div class="rest-stop-emoji" id="restStopEmoji" aria-hidden="true">🌈</div>
+              <p class="rest-stop-title" id="restStopTitle">つぎの のりもの くるよ</p>
+              <p class="rest-stop-copy" id="restStopCopy">いきを ふーっと して つづけよう</p>
+            </div>
+          </div>
+          <div class="surprise-pop" id="surprisePop" hidden>
+            <div class="surprise-card">
+              <p class="surprise-label">びっくり えんしゅつ</p>
+              <div class="surprise-icons" id="surpriseIcons" aria-hidden="true"></div>
+              <p class="surprise-title" id="surpriseTitle">トンネル ぴかっ</p>
+              <p class="surprise-copy" id="surpriseCopy">のりものごとに たのしい へんか</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" data-screen="result">
+        <button class="home-button home-button-result" id="homeButtonResult" type="button" aria-label="タイトルに もどる">🏠</button>
+        <div class="hero-card result-card" id="resultCard" role="button" tabindex="0" aria-label="もういちど あそぶ">
+          <p class="eyebrow">ゴール</p>
+          <h2 id="resultTitle">みんな クリア</h2>
+          <p class="hero-copy" id="resultCopy">
+            たのしく あそべたね。 もういちど やってみよう。
+          </p>
+          <p class="result-bonus" id="resultBonus">スター 0こ ・ 0れんぞく</p>
+          <button class="primary-button" id="restartButton" type="button">
+            もういちど
+          </button>
+          <p class="screen-tap-hint" aria-hidden="true">👆 どこでも もういちど</p>
+        </div>
+      </section>
+    </main>
+
+    <script src="./main.js" defer></script>
+  </body>
+</html>
