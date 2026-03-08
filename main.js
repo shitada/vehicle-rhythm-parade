@@ -473,6 +473,10 @@ const previewOverlay = document.querySelector("#previewOverlay");
 const previewLabel = document.querySelector("#previewLabel");
 const startOverlay = document.querySelector("#startOverlay");
 const startLabel = document.querySelector("#startLabel");
+const perfectOverlay = document.querySelector("#perfectOverlay");
+const perfectTitle = document.querySelector("#perfectTitle");
+const perfectEmoji = document.querySelector("#perfectEmoji");
+const perfectCopy = document.querySelector("#perfectCopy");
 
 let audioContext;
 let bgmIntervalId;
@@ -956,6 +960,7 @@ function prepareRound() {
   hideRestStop();
   previewOverlay.setAttribute("hidden", "");
   startOverlay.setAttribute("hidden", "");
+  hidePerfect();
   state.activePulse = -1;
   state.hits = 0;
   state.acceptingTap = false;
@@ -1107,6 +1112,36 @@ function runPulseSequence(round) {
   state.timers.push(finishTimer);
 }
 
+function hidePerfect() {
+  perfectOverlay.setAttribute("hidden", "");
+}
+
+function showPerfectCelebration(round, callback) {
+  perfectEmoji.textContent = round.emoji;
+  perfectTitle.textContent = "パーフェクト！";
+  perfectCopy.textContent = `${round.name} ぜんぶ たたけたよ！`;
+  perfectOverlay.removeAttribute("hidden");
+
+  // Celebration fanfare: big ascending melody
+  playTone(523, 0.15, "sine");
+  setTimeout(() => playTone(659, 0.15, "sine"), 150);
+  setTimeout(() => playTone(784, 0.15, "sine"), 300);
+  setTimeout(() => {
+    playTone(1047, 0.3, "sine");
+    playTone(784, 0.3, "sine");
+  }, 450);
+  setTimeout(() => {
+    playTone(1047, 0.15, "sine");
+    playTone(1319, 0.4, "sine");
+  }, 750);
+
+  const timer = setTimeout(() => {
+    hidePerfect();
+    callback();
+  }, 3000);
+  state.timers.push(timer);
+}
+
 function finishRound() {
   const round = rounds[state.roundIndex];
   const { orbSequence } = getBeatSequenceForRound(round);
@@ -1124,22 +1159,21 @@ function finishRound() {
   renderRewards();
 
   if (isPerfect) {
-    // Perfect fanfare: ascending sparkle tones
-    playTone(523, 0.1, "sine");
-    setTimeout(() => playTone(659, 0.1, "sine"), 100);
-    setTimeout(() => playTone(784, 0.1, "sine"), 200);
-    setTimeout(() => playTone(1047, 0.3, "sine"), 300);
-    showBubble("🌟 パーフェクト！");
-    showRoundBanner(`✨ ${round.name} パーフェクト！ ✨`);
+    showPerfectCelebration(round, () => {
+      proceedAfterRound();
+    });
   } else {
     playTone(523, 0.15, "sine");
     setTimeout(() => playTone(659, 0.15, "sine"), 120);
     setTimeout(() => playTone(784, 0.25, "sine"), 240);
     showBubble(round.clearPraise);
     showRoundBanner(`${round.name} クリア`);
+    showRewardBurst(round);
+    proceedAfterRound();
   }
-  showRewardBurst(round);
+}
 
+function proceedAfterRound() {
   const nextTimer = setTimeout(() => {
     state.roundIndex += 1;
 
@@ -1310,6 +1344,7 @@ function startGame() {
   hideSurprise();
   previewOverlay.setAttribute("hidden", "");
   startOverlay.setAttribute("hidden", "");
+  hidePerfect();
 
   ensureAudio();
 
@@ -1348,6 +1383,7 @@ function goHome(event) {
   hideSurprise();
   previewOverlay.setAttribute("hidden", "");
   startOverlay.setAttribute("hidden", "");
+  hidePerfect();
   state = createInitialState();
   showScreen("title");
 }
