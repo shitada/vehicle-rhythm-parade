@@ -562,7 +562,6 @@ function createPulseOrbs(round) {
   for (let index = 0; index < round.pulses; index += 1) {
     const orb = document.createElement("div");
     orb.className = "pulse-orb";
-    orb.style.borderColor = `${round.color}33`;
     pulseLane.append(orb);
   }
 }
