@@ -469,6 +469,9 @@ const surprisePop = document.querySelector("#surprisePop");
 const surpriseIcons = document.querySelector("#surpriseIcons");
 const surpriseTitle = document.querySelector("#surpriseTitle");
 const surpriseCopy = document.querySelector("#surpriseCopy");
+const previewOverlay = document.querySelector("#previewOverlay");
+const previewLabel = document.querySelector("#previewLabel");
+const startOverlay = document.querySelector("#startOverlay");
 
 let audioContext;
 let bgmIntervalId;
@@ -848,7 +851,10 @@ function runPreview(round, callback) {
     ? buildMixedBeatSequence(previewRound).totalDuration
     : buildBeatSequence(previewRound).totalDuration;
 
-  showRoundBanner("🎵 おてほん");
+  previewLabel.textContent = "🎵 おてほん";
+  previewOverlay.removeAttribute("hidden");
+
+  ensureAudio();
 
   for (const entry of previewOrbSequence) {
     const timer = setTimeout(() => {
@@ -873,6 +879,7 @@ function runPreview(round, callback) {
     pulseOrbs.forEach((orb) => {
       orb.classList.remove("pulse-active", "pulse-rest-active");
     });
+    previewOverlay.setAttribute("hidden", "");
     state.previewMode = false;
     tapButton.classList.remove("preview-mode");
     tapButton.querySelector("span").textContent = "👆 タップ";
@@ -884,6 +891,8 @@ function runPreview(round, callback) {
 function prepareRound() {
   clearTimers();
   hideRestStop();
+  previewOverlay.setAttribute("hidden", "");
+  startOverlay.setAttribute("hidden", "");
   state.activePulse = -1;
   state.hits = 0;
   state.acceptingTap = false;
@@ -925,8 +934,10 @@ function prepareRound() {
       state.timers.push(startTimer);
     } else {
       runPreview(round, () => {
-        showRoundBanner("さあ はじめよう！");
+        startOverlay.removeAttribute("hidden");
         const startTimer = setTimeout(() => {
+          startOverlay.setAttribute("hidden", "");
+          ensureAudio();
           createPulseOrbs(round);
           runPulseSequence(round);
         }, 1200);
@@ -938,6 +949,7 @@ function prepareRound() {
 }
 
 function runPulseSequence(round) {
+  ensureAudio();
   const pulseOrbs = Array.from(document.querySelectorAll(".pulse-orb"));
   const { orbSequence, totalDuration } = getBeatSequenceForRound(round);
 
@@ -1141,6 +1153,8 @@ function startGame() {
   stopBgm();
   hideRestStop();
   hideSurprise();
+  previewOverlay.setAttribute("hidden", "");
+  startOverlay.setAttribute("hidden", "");
   rounds = buildRounds();
   state = createInitialState();
   renderProgress();
@@ -1163,6 +1177,8 @@ function goHome(event) {
   stopBgm();
   hideRestStop();
   hideSurprise();
+  previewOverlay.setAttribute("hidden", "");
+  startOverlay.setAttribute("hidden", "");
   state = createInitialState();
   showScreen("title");
 }
