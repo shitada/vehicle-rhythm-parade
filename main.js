@@ -699,32 +699,28 @@ function showScreen(name) {
 }
 
 function ensureAudio() {
-  if (audioContext && audioContext.state === "closed") {
-    audioContext = null;
-  }
-
   if (!audioContext) {
     audioContext = new AudioContext();
     activeToneCount = 0;
   }
 
   if (audioContext.state === "suspended") {
-    audioContext.resume();
+    audioContext.resume().catch(() => {});
   }
 }
 
 function playTone(frequency, duration, type = "sine", gainScale = 1) {
-  const volumeGain = getVolumeGain() * gainScale;
+  if (!audioContext) {
+    return;
+  }
 
-  if (!audioContext || volumeGain === 0) {
+  const volumeGain = getVolumeGain() * gainScale;
+  if (volumeGain === 0) {
     return;
   }
 
   if (audioContext.state === "suspended") {
-    audioContext.resume();
-  }
-
-  if (audioContext.state !== "running") {
+    audioContext.resume().catch(() => {});
     return;
   }
 
@@ -755,8 +751,6 @@ function playTone(frequency, duration, type = "sine", gainScale = 1) {
       activeToneCount = Math.max(0, activeToneCount - 1);
     });
   } catch (_error) {
-    // AudioContext may be in a bad state; reset it on next user interaction
-    audioContext = null;
     activeToneCount = 0;
   }
 }
@@ -772,34 +766,38 @@ function stopBgm() {
 function startBgm(round) {
   stopBgm();
 
+  if (!audioContext) {
+    return;
+  }
+
   const bgmGain = getBgmGain();
-  if (!audioContext || bgmGain === 0) {
+  if (bgmGain === 0) {
     return;
   }
 
-  if (audioContext.state === "suspended") {
-    audioContext.resume();
-  }
+  const launchBgm = () => {
+    const playBgmStep = () => {
+      if (!audioContext) {
+        stopBgm();
+        return;
+      }
+      const note = round.bgmNotes[bgmStep % round.bgmNotes.length];
+      const harmony = note / 2;
+      playTone(note, 0.34, round.bgmType, 0.22);
+      playTone(harmony, 0.28, "sine", 0.11);
+      bgmStep += 1;
+    };
 
-  if (audioContext.state !== "running") {
-    return;
-  }
-
-  const playBgmStep = () => {
-    if (!audioContext || audioContext.state !== "running") {
-      stopBgm();
-      return;
-    }
-    const note = round.bgmNotes[bgmStep % round.bgmNotes.length];
-    const harmony = note / 2;
-    playTone(note, 0.34, round.bgmType, 0.22);
-    playTone(harmony, 0.28, "sine", 0.11);
-    bgmStep += 1;
+    playBgmStep();
+    const interval = Math.max(360, Math.round(round.beatInterval * 0.42));
+    bgmIntervalId = setInterval(playBgmStep, interval);
   };
 
-  playBgmStep();
-  const interval = Math.max(360, Math.round(round.beatInterval * 0.42));
-  bgmIntervalId = setInterval(playBgmStep, interval);
+  if (audioContext.state === "suspended") {
+    audioContext.resume().then(launchBgm).catch(() => {});
+  } else {
+    launchBgm();
+  }
 }
 
 function clearTimers() {
@@ -1186,11 +1184,6 @@ function startGame() {
   previewOverlay.setAttribute("hidden", "");
   startOverlay.setAttribute("hidden", "");
 
-  if (audioContext) {
-    try { audioContext.close(); } catch (_e) { /* ignore */ }
-    audioContext = null;
-    activeToneCount = 0;
-  }
   ensureAudio();
 
   rounds = buildRounds();
@@ -1201,11 +1194,22 @@ function startGame() {
 
 function activateStart(event) {
   event?.stopPropagation();
+  // Ensure AudioContext is created and resumed within user gesture
+  ensureAudio();
+  if (audioContext && audioContext.state === "suspended") {
+    audioContext.resume().then(() => startGame()).catch(() => startGame());
+    return;
+  }
   startGame();
 }
 
 function activateRestart(event) {
   event?.stopPropagation();
+  ensureAudio();
+  if (audioContext && audioContext.state === "suspended") {
+    audioContext.resume().then(() => startGame()).catch(() => startGame());
+    return;
+  }
   startGame();
 }
 
@@ -1261,3 +1265,20 @@ document.addEventListener("keydown", (event) => {
 
 renderRewards();
 renderProgress();
+
+// === Audio debug indicator (remove after debugging) ===
+const audioDebug = document.createElement("div");
+audioDebug.style.cssText = "position:fixed;bottom:4px;right:4px;padding:4px 8px;font-size:11px;font-family:monospace;background:rgba(0,0,0,0.7);color:#0f0;border-radius:6px;z-index:9999;pointer-events:none;";
+document.body.append(audioDebug);
+setInterval(() => {
+  const ctx = audioContext;
+  if (!ctx) {
+    audioDebug.textContent = "🔇 no ctx";
+    audioDebug.style.color = "#f66";
+    return;
+  }
+  const s = ctx.state;
+  const t = activeToneCount;
+  audioDebug.textContent = `🔊 ${s} t:${t} sr:${ctx.sampleRate}`;
+  audioDebug.style.color = s === "running" ? "#0f0" : s === "suspended" ? "#ff0" : "#f66";
+}, 200);
