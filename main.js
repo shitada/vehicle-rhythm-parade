@@ -476,6 +476,8 @@ const startOverlay = document.querySelector("#startOverlay");
 let audioContext;
 let bgmIntervalId;
 let bgmStep = 0;
+let activeToneCount = 0;
+const MAX_ACTIVE_TONES = 20;
 let state = createInitialState();
 
 function buildRounds() {
@@ -697,8 +699,13 @@ function showScreen(name) {
 }
 
 function ensureAudio() {
+  if (audioContext && audioContext.state === "closed") {
+    audioContext = null;
+  }
+
   if (!audioContext) {
     audioContext = new AudioContext();
+    activeToneCount = 0;
   }
 
   if (audioContext.state === "suspended") {
@@ -717,25 +724,41 @@ function playTone(frequency, duration, type = "sine", gainScale = 1) {
     audioContext.resume();
   }
 
-  const now = audioContext.currentTime;
-  const oscillator = audioContext.createOscillator();
-  const gainNode = audioContext.createGain();
+  if (audioContext.state !== "running") {
+    return;
+  }
 
-  oscillator.type = type;
-  oscillator.frequency.setValueAtTime(frequency, now);
-  gainNode.gain.setValueAtTime(0.001, now);
-  gainNode.gain.exponentialRampToValueAtTime(volumeGain, now + 0.02);
-  gainNode.gain.exponentialRampToValueAtTime(0.001, now + duration);
+  if (activeToneCount >= MAX_ACTIVE_TONES) {
+    return;
+  }
 
-  oscillator.connect(gainNode);
-  gainNode.connect(audioContext.destination);
-  oscillator.start(now);
-  oscillator.stop(now + duration + 0.04);
+  try {
+    const now = audioContext.currentTime;
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
 
-  oscillator.addEventListener("ended", () => {
-    oscillator.disconnect();
-    gainNode.disconnect();
-  });
+    oscillator.type = type;
+    oscillator.frequency.setValueAtTime(frequency, now);
+    gainNode.gain.setValueAtTime(0.001, now);
+    gainNode.gain.exponentialRampToValueAtTime(volumeGain, now + 0.02);
+    gainNode.gain.exponentialRampToValueAtTime(0.001, now + duration);
+
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    oscillator.start(now);
+    oscillator.stop(now + duration + 0.04);
+    activeToneCount += 1;
+
+    oscillator.addEventListener("ended", () => {
+      oscillator.disconnect();
+      gainNode.disconnect();
+      activeToneCount = Math.max(0, activeToneCount - 1);
+    });
+  } catch (_error) {
+    // AudioContext may be in a bad state; reset it on next user interaction
+    audioContext = null;
+    activeToneCount = 0;
+  }
 }
 
 function stopBgm() {
@@ -758,7 +781,15 @@ function startBgm(round) {
     audioContext.resume();
   }
 
+  if (audioContext.state !== "running") {
+    return;
+  }
+
   const playBgmStep = () => {
+    if (!audioContext || audioContext.state !== "running") {
+      stopBgm();
+      return;
+    }
     const note = round.bgmNotes[bgmStep % round.bgmNotes.length];
     const harmony = note / 2;
     playTone(note, 0.34, round.bgmType, 0.22);
@@ -1148,13 +1179,20 @@ function handleTap() {
 }
 
 function startGame() {
-  ensureAudio();
   clearTimers();
   stopBgm();
   hideRestStop();
   hideSurprise();
   previewOverlay.setAttribute("hidden", "");
   startOverlay.setAttribute("hidden", "");
+
+  if (audioContext) {
+    try { audioContext.close(); } catch (_e) { /* ignore */ }
+    audioContext = null;
+    activeToneCount = 0;
+  }
+  ensureAudio();
+
   rounds = buildRounds();
   state = createInitialState();
   renderProgress();
