@@ -721,7 +721,6 @@ function playTone(frequency, duration, type = "sine", gainScale = 1) {
 
   if (audioContext.state === "suspended") {
     audioContext.resume().catch(() => {});
-    return;
   }
 
   if (activeToneCount >= MAX_ACTIVE_TONES) {
@@ -1265,6 +1264,20 @@ document.addEventListener("keydown", (event) => {
 
 renderRewards();
 renderProgress();
+
+// Resume AudioContext when tab becomes visible again (Safari suspends audio in background)
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible" && audioContext && audioContext.state === "suspended") {
+    audioContext.resume().catch(() => {});
+  }
+});
+
+// Also resume on any touch/click as a fallback
+document.addEventListener("touchstart", () => {
+  if (audioContext && audioContext.state === "suspended") {
+    audioContext.resume().catch(() => {});
+  }
+}, { passive: true });
 
 // === Audio debug indicator (remove after debugging) ===
 const audioDebug = document.createElement("div");
