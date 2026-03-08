@@ -633,7 +633,26 @@ h2 {
 .start-label {
   background: linear-gradient(135deg, rgba(100, 255, 180, 0.96), rgba(45, 200, 130, 0.96));
   color: var(--ink);
-  font-size: clamp(1.5rem, 4vw, 2.2rem);
+  font-size: clamp(2rem, 6vw, 3.5rem);
+}
+
+.start-label.countdown-pop {
+  animation: countdown-pop 500ms ease;
+}
+
+@keyframes countdown-pop {
+  0% {
+    transform: scale(1.6);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 @keyframes label-bounce {

@@ -472,6 +472,7 @@ const surpriseCopy = document.querySelector("#surpriseCopy");
 const previewOverlay = document.querySelector("#previewOverlay");
 const previewLabel = document.querySelector("#previewLabel");
 const startOverlay = document.querySelector("#startOverlay");
+const startLabel = document.querySelector("#startLabel");
 
 let audioContext;
 let bgmIntervalId;
@@ -922,6 +923,30 @@ function runPreview(round, callback) {
   state.timers.push(finishTimer);
 }
 
+function runCountdown(callback) {
+  const steps = ["3", "2", "1", "スタート！"];
+  const tones = [440, 440, 440, 660];
+  startOverlay.removeAttribute("hidden");
+
+  let step = 0;
+  const tick = () => {
+    if (step >= steps.length) {
+      startOverlay.setAttribute("hidden", "");
+      callback();
+      return;
+    }
+    startLabel.textContent = steps[step];
+    startLabel.classList.remove("countdown-pop");
+    void startLabel.offsetWidth;
+    startLabel.classList.add("countdown-pop");
+    playTone(tones[step], 0.12, "triangle");
+    step += 1;
+    const timer = setTimeout(tick, step === steps.length ? 600 : 700);
+    state.timers.push(timer);
+  };
+  tick();
+}
+
 function prepareRound() {
   clearTimers();
   hideRestStop();
@@ -962,20 +987,19 @@ function prepareRound() {
     if (round.isMix) {
       showRoundBanner("いろんな のりものが でるよ！");
       const startTimer = setTimeout(() => {
-        createPulseOrbs(round);
-        runPulseSequence(round);
+        runCountdown(() => {
+          createPulseOrbs(round);
+          runPulseSequence(round);
+        });
       }, 1400);
       state.timers.push(startTimer);
     } else {
       runPreview(round, () => {
-        startOverlay.removeAttribute("hidden");
-        const startTimer = setTimeout(() => {
-          startOverlay.setAttribute("hidden", "");
+        runCountdown(() => {
           ensureAudio();
           createPulseOrbs(round);
           runPulseSequence(round);
-        }, 1200);
-        state.timers.push(startTimer);
+        });
       });
     }
   }, introDelay);
@@ -1086,7 +1110,9 @@ function finishRound() {
   state.finishedRounds = state.roundIndex + 1;
   renderProgress();
   renderRewards();
-  playTone(660, 0.22, "triangle");
+  playTone(523, 0.15, "sine");
+  setTimeout(() => playTone(659, 0.15, "sine"), 120);
+  setTimeout(() => playTone(784, 0.25, "sine"), 240);
   showBubble(round.clearPraise);
   showRoundBanner(`${round.name} クリア`);
   showRewardBurst(round);
