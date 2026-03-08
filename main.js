@@ -487,7 +487,7 @@ function buildRounds() {
 }
 
 function getVolumeGain() {
-  return 0.18;
+  return 0.25;
 }
 
 function getBgmGain() {
@@ -730,19 +730,24 @@ function playTone(frequency, duration, type = "sine", gainScale = 1) {
 
   try {
     const now = audioContext.currentTime;
+    const attackEnd = now + 0.015;
+    const releaseStart = now + duration;
     const oscillator = audioContext.createOscillator();
     const gainNode = audioContext.createGain();
 
     oscillator.type = type;
-    oscillator.frequency.setValueAtTime(frequency, now);
-    gainNode.gain.setValueAtTime(0.001, now);
-    gainNode.gain.exponentialRampToValueAtTime(volumeGain, now + 0.02);
-    gainNode.gain.exponentialRampToValueAtTime(0.001, now + duration);
+    oscillator.frequency.value = frequency;
+
+    // Use linearRamp for maximum browser compatibility
+    gainNode.gain.setValueAtTime(0, now);
+    gainNode.gain.linearRampToValueAtTime(volumeGain, attackEnd);
+    gainNode.gain.setValueAtTime(volumeGain, releaseStart);
+    gainNode.gain.linearRampToValueAtTime(0, releaseStart + 0.03);
 
     oscillator.connect(gainNode);
     gainNode.connect(audioContext.destination);
     oscillator.start(now);
-    oscillator.stop(now + duration + 0.04);
+    oscillator.stop(releaseStart + 0.05);
     activeToneCount += 1;
 
     oscillator.addEventListener("ended", () => {
@@ -1336,6 +1341,8 @@ setInterval(() => {
   }
   const s = ctx.state;
   const t = activeToneCount;
-  audioDebug.textContent = `🔊 ${s} t:${t} sr:${ctx.sampleRate}`;
+  const ct = Math.round(ctx.currentTime);
+  const dest = ctx.destination.numberOfInputs;
+  audioDebug.textContent = `🔊 ${s} t:${t} ct:${ct} ch:${ctx.destination.channelCount}`;
   audioDebug.style.color = s === "running" ? "#0f0" : s === "suspended" ? "#ff0" : "#f66";
 }, 200);
