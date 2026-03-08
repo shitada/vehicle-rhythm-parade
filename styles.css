@@ -481,7 +481,8 @@ h2 {
   gap: min(1.2vw, 8px);
   min-height: 80px;
   margin-top: 24px;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
+  row-gap: 12px;
 }
 
 .pulse-orb {
@@ -905,7 +906,8 @@ h2 {
   .pulse-lane {
     gap: min(1vw, 6px);
     min-height: 60px;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
+    row-gap: 10px;
   }
 
   .tap-button {
